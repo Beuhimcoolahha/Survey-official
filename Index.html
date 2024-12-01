@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweden War Group Survey</title>
+    <style>
+        /* Dark Gray Background */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Dark gray background */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Survey Container */
+        .survey-container {
+            background-color: #2a2a2a;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00bcd4;
+        }
+
+        .question {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #00bcd4;
+            border-radius: 5px;
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .options {
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #00bcd4;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0097a7;
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-container">
+        <h1>Sweden War Group Survey</h1>
+        <form id="survey-form">
+            <!-- Question 1 -->
+            <div class="question">
+                <label for="question1">1. How old are you?</label>
+                <input type="text" id="question1" placeholder="Enter your age" required>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question">
+                <label for="question2">2. What's your Discord username?</label>
+                <input type="text" id="question2" placeholder="Enter your Discord username" required>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question">
+                <label for="question3">3. What's your Roblox username?</label>
+                <input type="text" id="question3" placeholder="Enter your Roblox username" required>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question">
+                <label for="question4">4. Do you have prior experience in war groups?</label>
+                <select id="question4" required>
+                    <option value="" disabled selected>Choose an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="A little">A little</option>
+                </select>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question">
+                <label>5. Do you agree to follow orders given by higher-ranking officers?</label>
+                <div class="options">
+                    <label><input type="radio" name="question5" value="Yes" required> Yes</label>
+                    <label><input type="radio" name="question5" value="No"> No</label>
+                    <label><input type="radio" name="question5" value="Depends"> Depends</label>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question">
+                <label>6. Will you respect your fellow soldiers and officers?</label>
+                <div class="options">
+                    <label><input type="radio" name="question6" value="Yes" required> Yes</label>
+                    <label><input type="radio" name="question6" value="No"> No</label>
+                    <label><input type="radio" name="question6" value="Maybe"> Maybe</label>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question">
+                <label for="question7">7. Why do you want to join the Sweden War Group?</label>
+                <input type="text" id="question7" placeholder="Your reason" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" id="submit-button">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Replace 'YOUR_WEBHOOK_URL' with your actual Discord webhook URL
+        const webhookURL = 'YOUR_WEBHOOK_URL';
+
+        // Form submission handler
+        document.getElementById('submit-button').addEventListener('click', () => {
+            // Collect form data
+            const formData = {
+                question1: document.getElementById('question1').value,
+                question2: document.getElementById('question2').value,
+                question3: document.getElementById('question3').value,
+                question4: document.getElementById('question4').value,
+                question5: document.querySelector('input[name="question5"]:checked').value,
+                question6: document.querySelector('input[name="question6"]:checked').value,
+                question7: document.getElementById('question7').value
+            };
+
+            // Format the survey response for Discord
+            const surveyData = {
+                username: "Survey Bot",
+                content: `New Survey Response Received:
+                1. How old are you? ${formData.question1}
+                2. What's your Discord username? ${formData.question2}
+                3. What's your Roblox username? ${formData.question3}
+                4. Prior war group experience? ${formData.question4}
+                5. Follow orders? ${formData.question5}
+                6. Respect fellow soldiers? ${formData.question6}
+                7. Reason for joining? ${formData.question7}`
+            };
+
+            // Send the data to Discord
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(surveyData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Survey response successfully sent to Discord!');
+                } else {
+                    alert('Failed to send survey response. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
